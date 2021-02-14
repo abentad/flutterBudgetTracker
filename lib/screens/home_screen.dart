@@ -1,7 +1,9 @@
 import 'package:budgetApp/constants.dart';
+import 'package:budgetApp/providers/userData_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -20,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            buildLastWeekContent(),
+            buildLastWeekContent(context),
             Container(
               padding: EdgeInsets.all(kdefaultPadding),
               child: Column(
@@ -49,14 +51,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildLastWeekContent() {
+  Container buildLastWeekContent(BuildContext context) {
+    var userDataProvider = Provider.of<UserDataProvider>(context);
+
     return Container(
-      padding: EdgeInsets.all(kdefaultPadding),
       child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildInfoCard(),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: kdefaultPadding + 10, vertical: 5.0),
+              child: Text(
+                "Hi, ${userDataProvider.userName}",
+                style: kboldTitleStyle,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(kdefaultPadding + 10),
+              child: buildInfoCard(context),
+            ),
             SizedBox(height: 10.0),
             buildDayByDayInfo(
               day: "Today",
@@ -127,6 +142,7 @@ class HomeScreen extends StatelessWidget {
   Container buildDayByDayInfo(
       {String day, DateTime dateTimeNow, String label, String amount}) {
     return Container(
+      padding: EdgeInsets.all(kdefaultPadding + 10),
       child: Column(
         children: [
           Row(
@@ -168,9 +184,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Container buildInfoCard() {
+  Container buildInfoCard(BuildContext context) {
+    var userDataProvider = Provider.of<UserDataProvider>(context);
+
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
       height: 150,
       width: double.infinity,
       decoration: BoxDecoration(
@@ -178,16 +196,27 @@ class HomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '2000 Birr',
+                "${userDataProvider.userBudget.toString()} Birr",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Container(width: 50.0, height: 1.0, color: Colors.white),
+              SizedBox(height: 1.0),
+              Text(
+                "${userDataProvider.userGoal.toString()} Birr",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -210,7 +239,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 5.0),
               Row(
                 children: [
                   FaIcon(
@@ -231,6 +260,17 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
+          //right here
+          Container(
+            height: 90.0,
+            width: 90.0,
+            child: CircularProgressIndicator(
+              value: userDataProvider.userBudget / userDataProvider.userGoal,
+              strokeWidth: 20.0,
+              backgroundColor: Colors.grey[50].withOpacity(0.4),
+              valueColor: AlwaysStoppedAnimation(Colors.white),
+            ),
+          ),
         ],
       ),
     );
@@ -241,11 +281,11 @@ class HomeScreen extends StatelessWidget {
       isScrollable: true,
       labelColor: Colors.black,
       indicatorColor: Colors.white,
-      labelStyle: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+      labelStyle: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
       unselectedLabelStyle:
-          TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+          TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
       unselectedLabelColor: Colors.grey,
-      labelPadding: EdgeInsets.only(right: 43.0),
+      labelPadding: EdgeInsets.only(right: 48.0),
       tabs: [
         Tab(
           text: "Last Week",
