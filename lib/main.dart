@@ -1,3 +1,4 @@
+import 'package:budgetApp/providers/bottomNavigationBar_Provider.dart';
 import 'package:budgetApp/providers/userData_provider.dart';
 import 'package:budgetApp/screens/signUp_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => UserDataProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (BuildContext context) => UserDataProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => BottomNavigationBarProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'BudgetApp',
