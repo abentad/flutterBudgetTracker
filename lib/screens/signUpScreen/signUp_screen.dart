@@ -1,6 +1,7 @@
 import 'package:budgetApp/constants.dart';
 import 'package:budgetApp/providers/userData_provider.dart';
-import 'package:budgetApp/screens/home_screen.dart';
+import 'package:budgetApp/screens/homeScreen/home_screen.dart';
+import 'package:budgetApp/screens/signUpScreen/components/signUpScreen_components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,50 +29,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Form(
                 key: formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Welcome', style: kboldTitleStyle),
+                    Text(
+                      'Welcome',
+                      style: kboldTitleStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0,
+                      ),
+                    ),
                     SizedBox(height: 40.0),
-                    TextFormField(
+                    myCustomTextField(
                       controller: _nameController,
-                      decoration: InputDecoration(
-                        hintText: "Name",
-                      ),
-                      validator: (input) {
-                        if (input == null) {
-                          return "invalid input";
-                        } else {
-                          return null;
-                        }
-                      },
+                      hintText: "Name",
                     ),
                     SizedBox(height: 10.0),
-                    TextFormField(
+                    myCustomTextField(
                       controller: _budgetController,
-                      decoration: InputDecoration(
-                        hintText: "Budget",
-                      ),
-                      validator: (input) {
-                        if (input == null) {
-                          return "invalid input";
-                        } else {
-                          return null;
-                        }
-                      },
+                      hintText: "Budget",
                     ),
                     SizedBox(height: 10.0),
-                    TextFormField(
+                    myCustomTextField(
                       controller: _goalController,
-                      decoration: InputDecoration(
-                        hintText: "Goal",
-                      ),
-                      validator: (input) {
-                        if (input == null) {
-                          return "invalid input";
-                        } else {
-                          return null;
-                        }
-                      },
-                    )
+                      hintText: "Goal",
+                    ),
                   ],
                 ),
               ),
@@ -84,6 +65,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         .setUserBudget(int.parse(_budgetController.text));
                     userDataProvider
                         .setUserGoal(int.parse(_goalController.text));
+                    userDataProvider.setIsLoggedIn(true);
+                    userDataProvider.checkAndStore();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => HomeScreen()));
                   }
@@ -93,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 color: Colors.teal,
                 child: Text(
                   'Continue',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               )
             ],
