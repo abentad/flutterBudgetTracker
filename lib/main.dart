@@ -1,5 +1,4 @@
 import 'package:budgetApp/providers/userData_provider.dart';
-import 'package:budgetApp/screens/home_screen.dart';
 import 'package:budgetApp/screens/signUp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
