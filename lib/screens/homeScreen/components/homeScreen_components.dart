@@ -103,7 +103,7 @@ Container buildInfoCard(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${userDataProvider.userBudget.toString()} Birr",
+              "${userDataProvider.userData.userBudget.toString()} Birr",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24.0,
@@ -113,7 +113,7 @@ Container buildInfoCard(BuildContext context) {
             Container(width: 50.0, height: 1.0, color: Colors.white),
             SizedBox(height: 1.0),
             Text(
-              "${userDataProvider.userGoal.toString()} Birr",
+              "${userDataProvider.userData.userGoal.toString()} Birr",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14.0,
@@ -165,7 +165,8 @@ Container buildInfoCard(BuildContext context) {
           height: 90.0,
           width: 90.0,
           child: CircularProgressIndicator(
-            value: userDataProvider.userBudget / userDataProvider.userGoal,
+            value: userDataProvider.userData.userBudget /
+                userDataProvider.userData.userGoal,
             strokeWidth: 20.0,
             backgroundColor: Colors.grey[50].withOpacity(0.4),
             valueColor: AlwaysStoppedAnimation(Colors.white),
@@ -181,14 +182,20 @@ CustomScrollView buildLastWeekInfo(String capitalize(String text),
   return CustomScrollView(
     slivers: [
       SliverAppBar(
-        title: Text('Hi, ${capitalize(userDataProvider.userName)}',
-            style: kboldTitleStyle.copyWith(color: Colors.white)),
+        title: Text(
+          'Hi, ${capitalize(userDataProvider.userData.userName)}',
+          style: kboldTitleStyle.copyWith(color: Colors.white),
+        ),
         shadowColor: Colors.white,
         backgroundColor: Colors.teal,
         expandedHeight: 150.0,
-        floating: true,
+        floating: false,
         pinned: true,
+        stretch: true,
         flexibleSpace: FlexibleSpaceBar(
+          stretchModes: [
+            StretchMode.zoomBackground,
+          ],
           background: Image(
             image: AssetImage("assets/bg2.jpg"),
             fit: BoxFit.fill,
@@ -204,15 +211,16 @@ CustomScrollView buildLastWeekInfo(String capitalize(String text),
         itemExtent: 110.0,
         delegate: SliverChildListDelegate([
           Container(
-            decoration: BoxDecoration(color: Colors.white,
-                // borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(2, 9),
-                    blurRadius: 20.0,
-                  )
-                ]),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(2, 9),
+                  blurRadius: 20.0,
+                )
+              ],
+            ),
             margin: EdgeInsets.symmetric(horizontal: 5.0),
             child: buildDayByDayInfo(
               day: "Today",
@@ -337,7 +345,7 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               children: [
                 Text('Total Budget',
                     style: kboldTitleStyle.copyWith(fontSize: 16.0)),
-                Text("${userDataProvider.userBudget.toString()} Birr",
+                Text("${userDataProvider.userData.userBudget.toString()} Birr",
                     style: kboldTitleStyle.copyWith(color: Colors.teal)),
               ],
             ),
@@ -347,8 +355,10 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "50",
               text: "Add 50 Birr",
               press: () {
-                userDataProvider
-                    .setUserBudget(userDataProvider.userBudget + 50);
+                //
+                //this is where the update comes
+                // userDataProvider
+                //     .setUserBudget(userDataProvider.userBudget + 50);
               },
             ),
             SizedBox(height: 10.0),
@@ -357,8 +367,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "100",
               text: "Add 100 Birr",
               press: () {
-                userDataProvider
-                    .setUserBudget(userDataProvider.userBudget + 100);
+                // userDataProvider
+                //     .setUserBudget(userDataProvider.userBudget + 100);
               },
             ),
             SizedBox(height: 10.0),
@@ -367,8 +377,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "150",
               text: "Add 150 Birr",
               press: () {
-                userDataProvider
-                    .setUserBudget(userDataProvider.userBudget + 150);
+                // userDataProvider
+                //     .setUserBudget(userDataProvider.userBudget + 150);
               },
             ),
             SizedBox(height: 10.0),
@@ -377,8 +387,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "200",
               text: "Add 200 Birr",
               press: () {
-                userDataProvider
-                    .setUserBudget(userDataProvider.userBudget + 200);
+                // userDataProvider
+                //     .setUserBudget(userDataProvider.userBudget + 200);
               },
             ),
           ],

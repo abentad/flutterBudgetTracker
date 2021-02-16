@@ -1,73 +1,82 @@
-import 'package:budgetApp/utils/database_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:budgetApp/models/userDataModel.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class UserDataProvider with ChangeNotifier {
-  String _userName;
-  int _userBudget;
-  int _userGoal;
-  bool _isLoggedIn;
+  UserDataModel _userData;
+  //hive variable for the box
+  final userDataBox = Hive.box("userData");
 
+  //
+  bool _isSignedUp = false;
+
+  //constructor
   UserDataProvider() {
-    _isLoggedIn = false;
-    // loadPrefs();
+    loadUserData();
   }
 
-  //getters
-  String get userName => _userName;
-  int get userBudget => _userBudget;
-  int get userGoal => _userGoal;
-  bool get isLoggedIn => _isLoggedIn;
+  //getter
+  UserDataModel get userData => _userData;
+  bool get isSignedUp => _isSignedUp;
 
-  //setters
-  void setUserName(String name) {
-    _userName = name;
+  //setter
+  void setUserData(String name, int budget, int goal) {
+    _userData =
+        UserDataModel(userName: name, userBudget: budget, userGoal: goal);
     notifyListeners();
+    //will save the newly created user object to the hive database
+    saveUserData();
   }
 
-  void setUserBudget(int budget) {
-    _userBudget = budget;
-    notifyListeners();
+  //hive stuff
+  void saveUserData() {
+    userDataBox.add(_userData);
+    print('successfully Saved');
   }
 
-  void setUserGoal(int goal) {
-    _userGoal = goal;
-    notifyListeners();
+  void loadUserData() {
+    _userData = userDataBox.get(0) as UserDataModel;
+    print("loaded successfully");
   }
 
-  void setIsLoggedIn(bool value) {
-    _isLoggedIn = value;
-    // savePrefs();
-    notifyListeners();
-  }
-
-  void checkAndStore() {
-    try {
-      if (_isLoggedIn == true) {
-        storeToDataBase();
-      }
-    } catch (e) {
-      print('error $e');
-    }
-  }
-
-  void storeToDataBase() {
-    var dbUtils = DataBaseUtility();
-    dbUtils.addUserData(
-      name: _userName,
-      day: DateTime.now().toString(),
-      amount: _userBudget,
-    );
-  }
-
-  void savePrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("isLoggedIn", _isLoggedIn);
-  }
-
-  void loadPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool("isLoggedIn");
-    if (isLoggedIn != null) setIsLoggedIn(isLoggedIn);
+  //closes all boxes of hive
+  void closeHiveBox() {
+    Hive.close();
   }
 }
+
+//
+//
+//
+//
+// void setisSignedUp(bool value) {
+//   _isSignedUp = value;
+//   notifyListeners();
+//   // savePrefs();
+// }
+//
+
+//sharedprefs stuff
+// void savePrefs() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   prefs.setBool("isSignedUp", _isSignedUp);
+// }
+
+// void loadPrefs() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   bool isSignedUp = prefs.getBool("isSignedUP");
+//   if (isSignedUp != null) setisSignedUp(isSignedUp);
+// }
+//
+
+//
+// void savePrefs() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   prefs.setBool("isLoggedIn", _isLoggedIn);
+// }
+
+// void loadPrefs() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   bool isLoggedIn = prefs.getBool("isLoggedIn");
+//   if (isLoggedIn != null) setIsLoggedIn(isLoggedIn);
+// }
