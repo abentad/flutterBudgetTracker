@@ -16,16 +16,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _userGoalController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     UserDataProvider _userDataProvider = Provider.of<UserDataProvider>(context);
 
@@ -73,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 20.0),
                 MaterialButton(
                   onPressed: () {
+                    //will check if the form is validated
                     if (_formKey.currentState.validate()) {
                       //will create a new user object based on the user input
                       _userDataProvider.setUserData(
@@ -80,8 +71,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         int.parse(_userBudgetController.text),
                         int.parse(_userGoalController.text),
                       );
-                      // _userDataProvider.setisSignedUp(true);
-                      // print('isSignedUp set to true');
                       //will route to the detail screen
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(

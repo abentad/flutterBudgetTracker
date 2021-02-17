@@ -1,3 +1,4 @@
+import 'package:budgetApp/models/userDailyGainAmount.dart';
 import 'package:budgetApp/models/userDataModel.dart';
 import 'package:budgetApp/providers/bottomNavigationBar_Provider.dart';
 import 'package:budgetApp/providers/userData_provider.dart';
@@ -11,7 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //
 int initScreen;
-
+const String userDataBoxName = "userData";
+const String userDailyGainBoxName = "userDailyGain";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //initializing hive at app document directory
@@ -20,15 +22,17 @@ void main() async {
   Hive.init(appDocumentDirectory.path);
   //this will use the UserDataModelAdapter that we generated
   Hive.registerAdapter(UserDataModelAdapter());
+  Hive.registerAdapter(UserDailyGainModelAdapter());
 
-  //
+  //for opening the signUpform only one time
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = prefs.getInt("initScreen");
   await prefs.setInt("initScreen", 1);
   print('initScreen $initScreen');
   //
   //this will open the userData hive box
-  await Hive.openBox("userData");
+  await Hive.openBox<UserDataModel>(userDataBoxName);
+  await Hive.openBox<UserDailyGainModel>(userDailyGainBoxName);
 
   //
   runApp(
@@ -47,13 +51,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // var userDataProvider = Provider.of<UserDataProvider>(context);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'BudgetApp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home:

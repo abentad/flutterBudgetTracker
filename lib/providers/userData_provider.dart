@@ -1,11 +1,17 @@
+import 'package:budgetApp/models/userDailyGainAmount.dart';
 import 'package:budgetApp/models/userDataModel.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class UserDataProvider with ChangeNotifier {
   UserDataModel _userData;
+  UserDailyGainModel _userDailyGain;
+
+  int dailybudget = 0;
+
   //hive variable for the box
   final userDataBox = Hive.box("userData");
+  final userDailyGainBox = Hive.box('userDailyGain');
 
   //
   bool _isSignedUp = false;
@@ -13,11 +19,13 @@ class UserDataProvider with ChangeNotifier {
   //constructor
   UserDataProvider() {
     loadUserData();
+    loadDailyBudget();
   }
 
   //getter
   UserDataModel get userData => _userData;
   bool get isSignedUp => _isSignedUp;
+  UserDailyGainModel get userDailyGain => _userDailyGain;
 
   //setter
   void setUserData(String name, int budget, int goal) {
@@ -28,8 +36,16 @@ class UserDataProvider with ChangeNotifier {
     saveUserData();
   }
 
+  void setDailyGainData(DateTime date, int amount) {
+    _userDailyGain = UserDailyGainModel(date: date, amount: amount);
+    saveDailyBudget();
+    notifyListeners();
+  }
+
+  //updater
   void updateUserBudget(int amount) {
-    _userData.userBudget = amount;
+    _userData.userBudget = amount + _userData.userBudget;
+    dailybudget = dailybudget + amount;
     notifyListeners();
     updateUserBudgetDataOnDataBase(amount);
   }
@@ -43,6 +59,18 @@ class UserDataProvider with ChangeNotifier {
   void loadUserData() {
     _userData = userDataBox.get(0) as UserDataModel;
     print("loaded successfully");
+  }
+
+  void saveDailyBudget() {
+    //this is todays data and becomes yesterdays on the next day and it is at index 0
+    userDailyGainBox.add(_userDailyGain);
+
+    print('saved daily gain data');
+  }
+
+  void loadDailyBudget() {
+    _userDailyGain = userDailyGainBox.get(0) as UserDailyGainModel;
+    print('loaded daily gain data');
   }
 
   void updateUserBudgetDataOnDataBase(int amount) {
@@ -60,40 +88,17 @@ class UserDataProvider with ChangeNotifier {
   void closeHiveBox() {
     Hive.close();
   }
+
+  //hive stuff ends
+
+  void checkDate() {
+    //this also handles overflow into the next month
+    var nextCheck = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    //store nextCheck somewhere
+    if (DateTime.now().isAfter(nextCheck)) {
+      //do the thing
+      saveDailyBudget();
+    }
+  }
 }
-
-//
-//
-//
-//
-// void setisSignedUp(bool value) {
-//   _isSignedUp = value;
-//   notifyListeners();
-//   // savePrefs();
-// }
-//
-
-//sharedprefs stuff
-// void savePrefs() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   prefs.setBool("isSignedUp", _isSignedUp);
-// }
-
-// void loadPrefs() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   bool isSignedUp = prefs.getBool("isSignedUP");
-//   if (isSignedUp != null) setisSignedUp(isSignedUp);
-// }
-//
-
-//
-// void savePrefs() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   prefs.setBool("isLoggedIn", _isLoggedIn);
-// }
-
-// void loadPrefs() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   bool isLoggedIn = prefs.getBool("isLoggedIn");
-//   if (isLoggedIn != null) setIsLoggedIn(isLoggedIn);
-// }
