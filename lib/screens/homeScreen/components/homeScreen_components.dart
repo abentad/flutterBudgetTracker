@@ -357,8 +357,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               press: () {
                 //
                 //this is where the update comes
-                // userDataProvider
-                //     .setUserBudget(userDataProvider.userBudget + 50);
+                userDataProvider.updateUserBudget(
+                    userDataProvider.userData.userBudget + 50);
               },
             ),
             SizedBox(height: 10.0),
@@ -367,8 +367,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "100",
               text: "Add 100 Birr",
               press: () {
-                // userDataProvider
-                //     .setUserBudget(userDataProvider.userBudget + 100);
+                userDataProvider.updateUserBudget(
+                    userDataProvider.userData.userBudget + 100);
               },
             ),
             SizedBox(height: 10.0),
@@ -377,8 +377,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "150",
               text: "Add 150 Birr",
               press: () {
-                // userDataProvider
-                //     .setUserBudget(userDataProvider.userBudget + 150);
+                userDataProvider.updateUserBudget(
+                    userDataProvider.userData.userBudget + 150);
               },
             ),
             SizedBox(height: 10.0),
@@ -387,8 +387,8 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
               textInsideCircle: "200",
               text: "Add 200 Birr",
               press: () {
-                // userDataProvider
-                //     .setUserBudget(userDataProvider.userBudget + 200);
+                userDataProvider.updateUserBudget(
+                    userDataProvider.userData.userBudget + 200);
               },
             ),
           ],

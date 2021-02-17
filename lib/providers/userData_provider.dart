@@ -28,6 +28,12 @@ class UserDataProvider with ChangeNotifier {
     saveUserData();
   }
 
+  void updateUserBudget(int amount) {
+    _userData.userBudget = amount;
+    notifyListeners();
+    updateUserBudgetDataOnDataBase(amount);
+  }
+
   //hive stuff
   void saveUserData() {
     userDataBox.add(_userData);
@@ -37,6 +43,17 @@ class UserDataProvider with ChangeNotifier {
   void loadUserData() {
     _userData = userDataBox.get(0) as UserDataModel;
     print("loaded successfully");
+  }
+
+  void updateUserBudgetDataOnDataBase(int amount) {
+    userDataBox.put(
+      0,
+      UserDataModel(
+        userName: _userData.userName,
+        userBudget: amount,
+        userGoal: _userData.userGoal,
+      ),
+    );
   }
 
   //closes all boxes of hive
