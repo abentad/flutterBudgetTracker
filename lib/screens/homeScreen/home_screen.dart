@@ -4,6 +4,7 @@ import 'package:budgetApp/providers/userData_provider.dart';
 import 'package:budgetApp/screens/homeScreen/components/build_add_budget_tab.dart';
 import 'package:budgetApp/screens/homeScreen/components/build_bottom_navigation_bar.dart';
 import 'package:budgetApp/screens/homeScreen/components/build_last_week_info.dart';
+import 'package:budgetApp/screens/homeScreen/components/build_subtract_budget_tab.dart';
 import 'package:budgetApp/utils/all_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,8 @@ class HomeScreen extends StatelessWidget {
       buildLastWeekInfo(capitalize, userDataProvider, context),
       //add tab
       buildAddBudgetTab(userDataProvider),
+      //
+      buildSubtractBudgetTab(userDataProvider),
       //setting tab
       SafeArea(
         child: Container(

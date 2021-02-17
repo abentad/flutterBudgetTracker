@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
+SafeArea buildSubtractBudgetTab(UserDataProvider userDataProvider) {
   return SafeArea(
     child: Container(
         padding: EdgeInsets.all(kdefaultPadding + 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Add', style: kboldTitleStyle),
+            Text('Subtract', style: kboldTitleStyle),
             SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,38 +26,38 @@ SafeArea buildAddBudgetTab(UserDataProvider userDataProvider) {
             buildAddCard(
               bgColor: Colors.yellow[800],
               textInsideCircle: "50",
-              text: "Add 50 Birr",
+              text: "subtract 50 Birr",
               press: () {
                 //
                 //this is where the update comes
-                userDataProvider.addToUserBudget(50);
+                userDataProvider.subtractFromUserBudget(50);
               },
             ),
             SizedBox(height: 10.0),
             buildAddCard(
               bgColor: Colors.orange,
               textInsideCircle: "100",
-              text: "Add 100 Birr",
+              text: "subtract 100 Birr",
               press: () {
-                userDataProvider.addToUserBudget(100);
+                userDataProvider.subtractFromUserBudget(100);
               },
             ),
             SizedBox(height: 10.0),
             buildAddCard(
               bgColor: Colors.yellow[900],
               textInsideCircle: "150",
-              text: "Add 150 Birr",
+              text: "subtract 150 Birr",
               press: () {
-                userDataProvider.addToUserBudget(150);
+                userDataProvider.subtractFromUserBudget(150);
               },
             ),
             SizedBox(height: 10.0),
             buildAddCard(
               bgColor: Colors.teal,
               textInsideCircle: "200",
-              text: "Add 200 Birr",
+              text: "subtract 200 Birr",
               press: () {
-                userDataProvider.addToUserBudget(200);
+                userDataProvider.subtractFromUserBudget(200);
               },
             ),
           ],

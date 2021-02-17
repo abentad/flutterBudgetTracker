@@ -10,6 +10,7 @@ BottomNavigationBar buildBottomNavigationBar(
       bottomNavigationBarProvider.setSelectedIndex(tappedIndex);
     },
     selectedItemColor: Colors.teal,
+    unselectedItemColor: Colors.black,
     items: [
       BottomNavigationBarItem(
         label: "Home",
@@ -18,6 +19,10 @@ BottomNavigationBar buildBottomNavigationBar(
       BottomNavigationBarItem(
         label: "Add",
         icon: FaIcon(FontAwesomeIcons.plus),
+      ),
+      BottomNavigationBarItem(
+        label: "Subtract",
+        icon: FaIcon(FontAwesomeIcons.minus),
       ),
       BottomNavigationBarItem(
         label: "Settings",

@@ -10,8 +10,8 @@ class UserDataProvider with ChangeNotifier {
   int dailybudget = 0;
 
   //hive variable for the box
-  final userDataBox = Hive.box("userData");
-  final userDailyGainBox = Hive.box('userDailyGain');
+  final userDataBox = Hive.box<UserDataModel>("userData");
+  final userDailyGainBox = Hive.box<UserDailyGainModel>('userDailyGain');
 
   //
   bool _isSignedUp = false;
@@ -43,9 +43,16 @@ class UserDataProvider with ChangeNotifier {
   }
 
   //updater
-  void updateUserBudget(int amount) {
+  void addToUserBudget(int amount) {
     _userData.userBudget = amount + _userData.userBudget;
     dailybudget = dailybudget + amount;
+    notifyListeners();
+    updateUserBudgetDataOnDataBase(amount);
+  }
+
+  void subtractFromUserBudget(int amount) {
+    _userData.userBudget = _userData.userBudget - amount;
+    dailybudget = dailybudget - amount;
     notifyListeners();
     updateUserBudgetDataOnDataBase(amount);
   }
@@ -57,7 +64,7 @@ class UserDataProvider with ChangeNotifier {
   }
 
   void loadUserData() {
-    _userData = userDataBox.get(0) as UserDataModel;
+    _userData = userDataBox.get(0);
     print("loaded successfully");
   }
 
@@ -69,7 +76,7 @@ class UserDataProvider with ChangeNotifier {
   }
 
   void loadDailyBudget() {
-    _userDailyGain = userDailyGainBox.get(0) as UserDailyGainModel;
+    _userDailyGain = userDailyGainBox.get(0);
     print('loaded daily gain data');
   }
 
